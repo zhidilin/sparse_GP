@@ -1,1 +1,1 @@
-# sparse_GP
+# Sparse Gaussian Process Regression
