@@ -33,7 +33,7 @@ model.train()
 likelihood.train()
 optimizer = torch.optim.Adam([{'params': model.parameters()}], lr=0.01)
 
-# Our loss object. We're using the VariationalELBO
+# Our loss object.
 mll = gpytorch.mlls.ExactMarginalLogLikelihood(likelihood, model)
 
 epochs_iter = tqdm.tqdm(range(num_epochs), desc="Epoch")

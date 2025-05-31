@@ -40,7 +40,7 @@ optimizer = torch.optim.Adam([{'params': model.parameters(), "lr": 0.01},
                               {'params': likelihood.parameters(), "lr": 0.005},
                               ])
 model.train()
-# Our loss object. We're using the VariationalELBO
+# Our loss object.
 epochs_iter = tqdm.tqdm(range(num_epochs), desc="Epoch")
 for i in epochs_iter:
     for x_batch, y_batch in train_loader:
