@@ -24,33 +24,31 @@ train_loader = DataLoader(train_dataset, batch_size=1024, shuffle=True)
 num_inducing_points = 8
 
 inducing_points_ini = torch.randn(num_inducing_points, train_x.size(1)) * 0.5
+model = GPModel(inducing_points=inducing_points_ini)
 likelihood = gpytorch.likelihoods.GaussianLikelihood()
-model = SVGP_new(inducing_points=inducing_points_ini)
-if not model.variational_strategy.variational_params_initialized.item():
-    prior_dist = model.variational_strategy.prior_distribution
-    model.variational_strategy._variational_distribution.initialize_variational_distribution(prior_dist)
-    model.variational_strategy.variational_params_initialized.fill_(1)
-
 if torch.cuda.is_available():
     model = model.cuda()
     likelihood = likelihood.cuda()
 
 num_epochs = 1000
-optimizer = torch.optim.Adam([{'params': model.parameters(), "lr": 0.01},
-                              {'params': likelihood.parameters(), "lr": 0.005},
-                              ])
 model.train()
+likelihood.train()
+optimizer = torch.optim.Adam([
+    {'params': model.parameters()},
+    {'params': likelihood.parameters()},
+], lr=0.01)
+
 # Our loss object. We're using the VariationalELBO
+mll = gpytorch.mlls.VariationalELBO(likelihood, model, num_data=train_y.size(0))
+
 epochs_iter = tqdm.tqdm(range(num_epochs), desc="Epoch")
 for i in epochs_iter:
     for x_batch, y_batch in train_loader:
-        # 手动清缓存
-        model.variational_strategy._clear_cache()
         optimizer.zero_grad()
-        loss = model.loss(x_batch, y_batch, likelihood)
+        output = model(x_batch)
+        loss = -mll(output, y_batch)
         epochs_iter.set_postfix(loss=loss.item())
         loss.backward()
         optimizer.step()
 
-model.eval()
 plot_snelson(model, likelihood, train_x, train_y, test_x, inducing_points_ini)
