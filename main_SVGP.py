@@ -2,7 +2,7 @@ import tqdm
 import torch
 from torch.utils.data import TensorDataset, DataLoader
 import gpytorch
-from GPmodules.GPs import GPModel, SVGP_new
+from GPmodules.GPs import GPModel
 from utils.setup import reset_seed
 from utils.utils_dataset import DataNormalizer, load_Snelson
 from utils.SnelsonPlots import plot_snelson

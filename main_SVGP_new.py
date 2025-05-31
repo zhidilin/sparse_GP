@@ -2,7 +2,7 @@ import tqdm
 import torch
 from torch.utils.data import TensorDataset, DataLoader
 import gpytorch
-from GPmodules.GPs import GPModel, SVGP_new
+from GPmodules.GPs import SVGP_new
 from utils.setup import reset_seed
 from utils.utils_dataset import DataNormalizer, load_Snelson
 from utils.SnelsonPlots import plot_snelson
@@ -37,7 +37,7 @@ if torch.cuda.is_available():
 
 num_epochs = 1000
 optimizer = torch.optim.Adam([{'params': model.parameters(), "lr": 0.01},
-                              {'params': likelihood.parameters(), "lr": 0.005},
+                              {'params': likelihood.parameters(), "lr": 0.01},
                               ])
 model.train()
 # Our loss object.
@@ -53,4 +53,4 @@ for i in epochs_iter:
         optimizer.step()
 
 model.eval()
-plot_snelson(model, likelihood, train_x, train_y, test_x, inducing_points_ini)
+plot_snelson(model, likelihood, train_x, train_y, test_x, inducing_points_ini, color='green')
