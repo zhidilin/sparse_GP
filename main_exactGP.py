@@ -46,4 +46,4 @@ for i in epochs_iter:
     optimizer.step()
     print()
 
-plot_snelson(model, likelihood, train_x, train_y, test_x)
+plot_snelson(model, likelihood, train_x, train_y, test_x, color='orange')

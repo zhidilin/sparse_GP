@@ -2,7 +2,7 @@ from matplotlib import pyplot as plt
 import numpy as np
 import torch
 
-def plot_snelson(model, likelihood, train_x, train_y, test_x, inducing_points_ini=None):
+def plot_snelson(model, likelihood, train_x, train_y, test_x, inducing_points_ini=None, color='purple'):
     """
     Plot the Snelson dataset with GP predictions and confidence intervals.
 
@@ -32,11 +32,11 @@ def plot_snelson(model, likelihood, train_x, train_y, test_x, inducing_points_in
     plt.figure(figsize=(10, 6))
     plt.plot(test_x.cpu().numpy(),
              preds_mean.cpu().numpy(),
-             label='Predicted Mean', color='purple')
+             label='Predicted Mean', color=color)
     plt.fill_between(test_x.cpu().squeeze().numpy(),
                      preds_lower.cpu().numpy(),
                      preds_upper.cpu().numpy(),
-                     color='purple', alpha=0.15, label='95% Confidence Interval')
+                     color=color, alpha=0.15, label='95% Confidence Interval')
     plt.scatter(train_x.cpu().numpy(), train_y.cpu().numpy(),
                 label='Training Data', color='k', s=20)
 
