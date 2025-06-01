@@ -3,7 +3,7 @@
 ```
 main_SVGP.py: Main script to run Stochastic Variational Gaussian Process (SVGP) [Hensman'2013]
 
-main_SVGP_new.py: Main script to run SVGP with new lower bound
+main_VFITC.py: Main script to run variational FITC (VFITC) [Jankowiak'2020]
 
 main_titsias25.py: Main script to run tighter bound for SVGP in Titsias'25 [Titsias'2025]
 
