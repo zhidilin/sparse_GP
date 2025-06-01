@@ -38,11 +38,11 @@ class GPModel(ApproximateGP):
         return gpytorch.distributions.MultivariateNormal(mean_x, covar_x)
 
 
-class SVGP_new(ApproximateGP):
+class VFITC(ApproximateGP):
     def __init__(self, inducing_points):
         variational_distribution = CholeskyVariationalDistribution(inducing_points.size(0))
         variational_strategy = VariationalStrategy(self, inducing_points, variational_distribution, learn_inducing_locations=True)
-        super(SVGP_new, self).__init__(variational_strategy)
+        super(VFITC, self).__init__(variational_strategy)
         self.mean_module = gpytorch.means.ConstantMean()
         self.covar_module = gpytorch.kernels.ScaleKernel(gpytorch.kernels.RBFKernel())
 
@@ -73,7 +73,6 @@ class SVGP_new(ApproximateGP):
         variational_mean = self.variational_strategy.variational_distribution.mean
         # retrieve variational covariance: K_ZZ^{-1/2} S K_ZZ^{-1/2}, shape (..., num_inducing_points, num_inducing_points)
         variational_covar = self.variational_strategy.variational_distribution.lazy_covariance_matrix
-
 
         # compute covariance matrices
         induc_induc_covar = self.covar_module(self.variational_strategy.inducing_points).add_jitter()

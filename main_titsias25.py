@@ -2,7 +2,7 @@ import tqdm
 import torch
 from torch.utils.data import TensorDataset, DataLoader
 import gpytorch
-from GPmodules.GPs import SVGP_new
+from GPmodules.GPs import VFITC
 from utils.setup import reset_seed
 from utils.utils_dataset import DataNormalizer, load_Snelson
 from utils.SnelsonPlots import plot_snelson
@@ -25,7 +25,7 @@ num_inducing_points = 8
 
 inducing_points_ini = torch.randn(num_inducing_points, train_x.size(1)) * 0.5
 likelihood = gpytorch.likelihoods.GaussianLikelihood()
-model = SVGP_new(inducing_points=inducing_points_ini)
+model = VFITC(inducing_points=inducing_points_ini)
 if not model.variational_strategy.variational_params_initialized.item():
     prior_dist = model.variational_strategy.prior_distribution
     model.variational_strategy._variational_distribution.initialize_variational_distribution(prior_dist)
